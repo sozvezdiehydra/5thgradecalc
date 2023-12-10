@@ -135,14 +135,7 @@ namespace _5thGradeV4
                             StringBuilder sb = new StringBuilder();
                             for (int i = 0; i < inp.Length; i++)
                             {
-                                if (i != inp.Length - 1)
-                                {
-                                    sb.Append(dictionaryOutTen[inp[i]]);
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                                sb.Append(dictionaryOutTen[inp[i]]);
                             }
                             return sb.ToString();
                         }
@@ -185,8 +178,9 @@ namespace _5thGradeV4
                             mainStr = num1;
                             lowStr = num2;
                         }
-                        int[] reserve = new int[mainStr.Length + 2];
-                        int[] result = new int[mainStr.Length + 2];
+                        int[] reserve = new int[mainStr.Length+1];
+                        var result = new List<int>();
+                        //int[] result = new int[mainStr.Length+1];
                         label1.Text = ("Далее в расчётах над верхним числом будет идти ряд для переноса.");
                         label1.Text = ($"    {Printing(reserve)}");
                         label2.Text = ($"    {mainStr}");
@@ -204,21 +198,28 @@ namespace _5thGradeV4
                             {
                                 n2 = dictionaryInTen[lowStr[i]];
                             }
-                            int n3 = n1 + n2 + reserve[i + 1];
+                            int n3 = n1 + n2 + reserve[i+1];
                             if (n3 >= cc)
                             {
                                 reserve[i] = (int)(n3 / cc);
-                                n3 = n3 - reserve[i] * cc;
+                                n3 = n3 - cc;
                             }
                             label1.Text = ($"Складывем {mainStr[i]} и {lowStr[i]}");
                             label2.Text = ($"    {Printing(reserve)}");
                             label3.Text = ($"    {mainStr}");
                             label4.Text = ($"    {lowStr}");
-                            result[i] = n3;
-                            label1.Text = ($"    {Printing(result)}");
+                            result.Insert(0, n3);
 
                         }
-                        textBox4.Text = ($"В результате получаем: {Printing(result)}");
+
+                        if (reserve[0] != 0)
+                            result.Insert(0, reserve[0]);
+
+                        var resultArray = result.ToArray();
+                        string representation = Printing(resultArray);
+
+                        label1.Text = ($"    {representation}");
+                        textBox4.Text = ($"В результате получаем: {representation}");
                 }
                 private void textBox1_TextChanged(object sender, EventArgs e)
                 {
